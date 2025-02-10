@@ -1,0 +1,35 @@
+# Ignore build and binary directories
+bin/
+obj/
+
+# Ignore Visual Studio files
+.vs/
+*.user
+*.suo
+*.cache
+*.pdb
+
+# Ignore Rider / JetBrains files
+.idea/
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore npm packages (if applicable)
+node_modules/
+
+# Ignore dependency packages
+packages/
+!packages/repositories.config
+
+# Ignore config files containing sensitive information
+appsettings.json
+appsettings.Development.json
+secrets.json
+
+# Ignore temporary files
+temp/
