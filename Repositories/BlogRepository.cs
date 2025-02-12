@@ -10,7 +10,7 @@ namespace blogfolio.Repositories
         private readonly BlogfolioContext _blogfolioContext;
         public BlogRepository(BlogfolioContext blogfolioContext)
         {
-            blogfolioContext = _blogfolioContext;
+            _blogfolioContext = blogfolioContext;
         }
 
         public async Task DeleteAsync(int id)
@@ -29,12 +29,14 @@ namespace blogfolio.Repositories
 
         async Task<IEnumerable<Blog>> IBlogRepository.GetAllAsync()
         {
-            return await _blogfolioContext.Blogs.ToListAsync();
+            var blogs =  await _blogfolioContext.Blogs.ToListAsync();
+            return blogs;
         }
 
         async Task<Blog> IBlogRepository.GetAsync(int id)
         {
-            return await _blogfolioContext.Blogs.FindAsync(id);
+            var blog = await _blogfolioContext.Blogs.FindAsync(id);
+            return blog;
         }
 
         async Task IBlogRepository.UpdateAsync(Blog blog)

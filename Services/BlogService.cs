@@ -8,7 +8,7 @@ namespace blogfolio.Services
     public class BlogService : IBlogService
     {
         private readonly IBlogRepository _blogRepository;
-        public BlogService(BlogRepository blogRepository)
+        public BlogService(IBlogRepository blogRepository)
         {
             _blogRepository = blogRepository;
         }
@@ -21,6 +21,18 @@ namespace blogfolio.Services
                 UserId = createBlogDto.UserId,
                 ImagePath = createBlogDto.ImagePath,
             };
+            // If the DTO contains tag IDs, create join entities for each
+            if (createBlogDto.TagIds != null)
+            {
+                foreach (var tagId in createBlogDto.TagIds)
+                {
+                    blog.BlogTags.Add(new BlogTag
+                    {
+                        TagId = tagId
+                        // Note: BlogId will be set automatically by EF Core when the Blog entity is saved.
+                    });
+                }
+            }
             return await _blogRepository.AddAsync(blog);
         }
 

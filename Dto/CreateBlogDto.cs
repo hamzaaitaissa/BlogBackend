@@ -10,6 +10,8 @@ namespace blogfolio.Dto
         public string Description { get; set; }
         [Required(ErrorMessage = "UserId is required.")]
         public int UserId { get; set; }
+        [Required]
+        public List<int> TagIds { get; set; }
         public string ImagePath { get; set; }
     }
 }
