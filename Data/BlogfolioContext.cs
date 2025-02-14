@@ -1,9 +1,10 @@
 ﻿using blogfolio.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace blogfolio.Data
 {
-    public class BlogfolioContext(DbContextOptions<BlogfolioContext> options):DbContext(options)
+    public class BlogfolioContext(DbContextOptions<BlogfolioContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Blog> Blogs { get; set; }
@@ -20,6 +21,12 @@ namespace blogfolio.Data
             // Configure composite primary key for BlogTag (ensures each Blog-Tag pair is unique)
             modelBuilder.Entity<BlogTag>()
                 .HasKey(bt => new { bt.BlogId, bt.TagId });
+
+            modelBuilder.Entity<Blog>()
+                .HasOne(b => b.User)          // Each Blog has one User
+                .WithMany(u => u.Blogs)       // Each User can have many Blogs
+                .HasForeignKey(b => b.UserId); // The foreign key property in Blog
+
 
             // Configure the relationship between Blog and BlogTag
             modelBuilder.Entity<BlogTag>()
@@ -39,6 +46,12 @@ namespace blogfolio.Data
                 new Tag { Id = 3, Name = "Programming" },
                 new Tag { Id = 4, Name = "Travel" },
                 new Tag { Id = 5, Name = "Food" }
+                );
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, FullName = "Hamza", Email = "Hamza@test.com", HashedPassword = "123456789" }
+    );
+            modelBuilder.Entity<Blog>().HasData(
+                new Blog { Id = 1, Title = "Blog Title", Description = "Blog desc", UserId = 1, ImagePath = "cool.jpg", CreatedDate = new DateTime()}
                 );
             modelBuilder.Entity<Blog>()
             .Property(b => b.CreatedDate)

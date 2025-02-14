@@ -29,13 +29,18 @@ namespace blogfolio.Repositories
 
         async Task<IEnumerable<Blog>> IBlogRepository.GetAllAsync()
         {
-            var blogs =  await _blogfolioContext.Blogs.ToListAsync();
+            var blogs =  await _blogfolioContext.Blogs.Include(b => b.BlogTags)
+            .ThenInclude(bt => bt.Tag)
+        .ToListAsync();
+
             return blogs;
         }
 
         async Task<Blog> IBlogRepository.GetAsync(int id)
         {
-            var blog = await _blogfolioContext.Blogs.FindAsync(id);
+            var blog = await _blogfolioContext.Blogs.Include(b => b.BlogTags)
+            .ThenInclude(bt => bt.Tag)
+        .FirstOrDefaultAsync(b => b.Id == id);
             return blog;
         }
 

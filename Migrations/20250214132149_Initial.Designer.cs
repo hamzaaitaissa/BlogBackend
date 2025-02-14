@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using blogfolio.Data;
 
@@ -10,9 +11,11 @@ using blogfolio.Data;
 namespace blogfolio.Migrations
 {
     [DbContext(typeof(BlogfolioContext))]
-    partial class BlogfolioContextModelSnapshot : ModelSnapshot
+    [Migration("20250214132149_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
@@ -45,20 +48,7 @@ namespace blogfolio.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Blogs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Blog desc",
-                            ImagePath = "cool.jpg",
-                            Title = "Blog Title",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("blogfolio.Entities.BlogTag", b =>
@@ -123,7 +113,7 @@ namespace blogfolio.Migrations
 
             modelBuilder.Entity("blogfolio.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -140,29 +130,9 @@ namespace blogfolio.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Hamza@test.com",
-                            FullName = "Hamza",
-                            HashedPassword = "123456789"
-                        });
-                });
-
-            modelBuilder.Entity("blogfolio.Entities.Blog", b =>
-                {
-                    b.HasOne("blogfolio.Entities.User", "User")
-                        .WithMany("Blogs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("blogfolio.Entities.BlogTag", b =>
@@ -192,11 +162,6 @@ namespace blogfolio.Migrations
             modelBuilder.Entity("blogfolio.Entities.Tag", b =>
                 {
                     b.Navigation("BlogTags");
-                });
-
-            modelBuilder.Entity("blogfolio.Entities.User", b =>
-                {
-                    b.Navigation("Blogs");
                 });
 #pragma warning restore 612, 618
         }

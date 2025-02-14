@@ -20,8 +20,9 @@ namespace blogfolio.Services
                 Description = createBlogDto.Description,
                 UserId = createBlogDto.UserId,
                 ImagePath = createBlogDto.ImagePath,
+                BlogTags = new List<BlogTag>()
             };
-            // If the DTO contains tag IDs, create join entities for each
+            // For each selected tag ID, create a new BlogTag entry
             if (createBlogDto.TagIds != null)
             {
                 foreach (var tagId in createBlogDto.TagIds)
@@ -33,7 +34,8 @@ namespace blogfolio.Services
                     });
                 }
             }
-            return await _blogRepository.AddAsync(blog);
+            await _blogRepository.AddAsync(blog);
+            return blog;
         }
 
         async Task IBlogService.DeleteBlogAsync(int id)

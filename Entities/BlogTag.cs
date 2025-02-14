@@ -1,7 +1,10 @@
-﻿namespace blogfolio.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace blogfolio.Entities
 {
     public class BlogTag
     {
+        [Key]
         public int Id { get; set; }
         public int BlogId { get; set; }
         public Blog Blog { get; set; }

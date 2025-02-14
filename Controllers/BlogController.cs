@@ -1,4 +1,5 @@
-﻿using blogfolio.Dto;
+﻿using AutoMapper;
+using blogfolio.Dto;
 using blogfolio.Entities;
 using blogfolio.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,19 @@ namespace blogfolio.Controllers
     public class BlogController : ControllerBase
     {
         private readonly IBlogService _blogService;
+        private readonly IMapper _mapper;
 
-        public BlogController(IBlogService blogService)
+        public BlogController(IBlogService blogService, IMapper mapper)
         {
             _blogService = blogService;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
         {
             var blogs = await _blogService.GetAllBlogsAsync();
-            return Ok(blogs);
+            var responseDtos = _mapper.Map<IEnumerable<BlogResponseDto>>(blogs);
+            return Ok(responseDtos);
          
         }
 
@@ -37,7 +41,12 @@ namespace blogfolio.Controllers
         [HttpPost]
         public async Task<ActionResult<Blog>> CreateBlog([FromBody] CreateBlogDto createBlogDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var blog = await _blogService.CreateBlogAsync(createBlogDto);
+            // Returns a 201 Created response with a route to the newly created blog post
             return CreatedAtAction(nameof(GetBlog), new { id = blog.Id }, blog);
         }
 
