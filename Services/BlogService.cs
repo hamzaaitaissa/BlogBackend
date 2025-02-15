@@ -2,6 +2,7 @@
 using blogfolio.Dto;
 using blogfolio.Entities;
 using blogfolio.Repositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace blogfolio.Services
 {
@@ -53,9 +54,28 @@ namespace blogfolio.Services
             return _blogRepository.GetAsync(id);
         }
 
-        Task IBlogService.UpdateBlogAsync(CreateBlogDto createBlogDto, int id)
+        async Task IBlogService.UpdateBlogAsync(UpdateBlogDto updateBlogDto, int id)
         {
-            throw new NotImplementedException();
+            var blog = await _blogRepository.GetAsync(id);
+            blog.Description = updateBlogDto.Description;
+            blog.Title = updateBlogDto.Title;
+            blog.ImagePath = updateBlogDto.ImagePath;
+            blog.BlogTags = new List<BlogTag>();
+            // For each selected tag ID, create a new BlogTag entry
+            if (updateBlogDto.TagIds != null)
+            {
+                foreach (var tagId in updateBlogDto.TagIds)
+                {
+                    blog.BlogTags.Add(new BlogTag
+                    {
+                        TagId = tagId
+                        // Note: BlogId will be set automatically by EF Core when the Blog entity is saved.
+                    });
+                }
+            }
+            await _blogRepository.UpdateAsync(blog);
+            
+
         }
     }
 }

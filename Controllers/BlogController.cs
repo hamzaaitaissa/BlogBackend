@@ -49,6 +49,23 @@ namespace blogfolio.Controllers
             // Returns a 201 Created response with a route to the newly created blog post
             return CreatedAtAction(nameof(GetBlog), new { id = blog.Id }, blog);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Blog>> UpdateBlog(int id,[FromBody] UpdateBlogDto updateBlogDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _blogService.UpdateBlogAsync(updateBlogDto, id);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Blog>> DeleteBlog(int id)
+        {
+            await _blogService.DeleteBlogAsync(id);
+            return Ok();
+        }
 
     }
 }

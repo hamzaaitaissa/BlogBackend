@@ -32,13 +32,15 @@ namespace blogfolio.Data
             modelBuilder.Entity<BlogTag>()
                 .HasOne(bt => bt.Blog)
                 .WithMany(b => b.BlogTags)
-                .HasForeignKey(bt => bt.BlogId);
+                .HasForeignKey(bt => bt.BlogId)
+                .OnDelete(DeleteBehavior.Cascade); ;
 
             // Configure the relationship between Tag and BlogTag
             modelBuilder.Entity<BlogTag>()
                 .HasOne(bt => bt.Tag)
                 .WithMany(t => t.BlogTags)
-                .HasForeignKey(bt => bt.TagId);
+                .HasForeignKey(bt => bt.TagId)
+                .OnDelete(DeleteBehavior.Cascade); ;
 
             modelBuilder.Entity<Tag>().HasData(
                 new Tag { Id = 1, Name = "Technology" },

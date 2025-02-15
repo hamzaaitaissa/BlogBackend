@@ -9,6 +9,6 @@ namespace blogfolio.Services
         Task<Blog> GetBlogById(int id);
         Task<Blog> CreateBlogAsync(CreateBlogDto createBlogDto);
         Task DeleteBlogAsync(int id);
-        Task UpdateBlogAsync(CreateBlogDto createBlogDto, int id);
+        Task UpdateBlogAsync(UpdateBlogDto updateBlogDto, int id);
     }
 }
