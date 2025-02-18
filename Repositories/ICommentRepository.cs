@@ -6,6 +6,8 @@ namespace blogfolio.Repositories
     {
         Task<IEnumerable<Comment>> GetAllAsync();
         Task<Comment> GetByIdAsync(int id);
-        Task CreateAsync(Comment comment);
+        Task<Comment> CreateAsync(Comment comment);
+        Task UpdateAsync(Comment comment);
+        Task DeleteAsync(int id);
     }
 }

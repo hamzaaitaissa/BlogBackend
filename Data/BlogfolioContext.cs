@@ -1,6 +1,5 @@
 ﻿using blogfolio.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace blogfolio.Data
 {
@@ -10,6 +9,7 @@ namespace blogfolio.Data
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogTag> blogTags { get; set; }
+        public DbSet<Comment> comments { get; set; }
 
         // Configure the model relationships
         // This method is called by EF Core during model creation. 
@@ -41,6 +41,10 @@ namespace blogfolio.Data
                 .WithMany(t => t.BlogTags)
                 .HasForeignKey(bt => bt.TagId)
                 .OnDelete(DeleteBehavior.Cascade); ;
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId);
 
             modelBuilder.Entity<Tag>().HasData(
                 new Tag { Id = 1, Name = "Technology" },
@@ -49,11 +53,12 @@ namespace blogfolio.Data
                 new Tag { Id = 4, Name = "Travel" },
                 new Tag { Id = 5, Name = "Food" }
                 );
+
             modelBuilder.Entity<User>().HasData(
                 new User { Id = 1, FullName = "Hamza", Email = "Hamza@test.com", HashedPassword = "123456789" }
     );
             modelBuilder.Entity<Blog>().HasData(
-                new Blog { Id = 1, Title = "Blog Title", Description = "Blog desc", UserId = 1, ImagePath = "cool.jpg", CreatedDate = new DateTime()}
+                new Blog { Id = 1, Title = "Blog Title", Description = "Blog desc", UserId = 1, ImagePath = "cool.jpg", CreatedDate = new DateTime() }
                 );
             modelBuilder.Entity<Blog>()
             .Property(b => b.CreatedDate)
