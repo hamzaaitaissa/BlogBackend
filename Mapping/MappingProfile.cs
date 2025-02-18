@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using blogfolio.Dto.Blog;
 using blogfolio.Dto.Comment;
+using blogfolio.Dto.User;
 using blogfolio.Entities;
 
 namespace blogfolio.Mapping
@@ -15,6 +16,7 @@ namespace blogfolio.Mapping
                            opt => opt.MapFrom(src => src.BlogTags.Select(bt => bt.Tag.Name)));
 
             CreateMap<Comment, ReadCommentDto>();
+            CreateMap<User, UserDto>();
         }
     }
 }

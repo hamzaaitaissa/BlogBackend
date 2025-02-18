@@ -1,4 +1,5 @@
 ﻿using blogfolio.Dto.Comment;
+using blogfolio.Dto.User;
 using System.ComponentModel.DataAnnotations;
 
 namespace blogfolio.Dto.Blog
@@ -15,5 +16,6 @@ namespace blogfolio.Dto.Blog
         public DateTime CreatedDate { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public IEnumerable<ReadCommentDto> Comments { get; set; }
+        public UserDto User { get; set; }
     }
 }

@@ -35,7 +35,8 @@ namespace blogfolio.Controllers
             {
                 return NotFound();
             }
-            return Ok(blog);
+            var responseDto = _mapper.Map<BlogResponseDto>(blog);
+            return Ok(responseDto);
         }
 
         [HttpPost]
