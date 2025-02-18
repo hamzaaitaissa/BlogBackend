@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace blogfolio.Dto
+namespace blogfolio.Dto.Comment
 {
     public class UpdateCommentDto
     {

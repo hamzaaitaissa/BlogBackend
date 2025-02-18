@@ -1,4 +1,4 @@
-﻿using blogfolio.Dto;
+﻿using blogfolio.Dto.Comment;
 using blogfolio.Entities;
 using blogfolio.Repositories;
 
@@ -24,19 +24,19 @@ namespace blogfolio.Services
             return comment;
         }
 
-        Task ICommentService.DeleteCommentAsync(int id)
+        async Task ICommentService.DeleteCommentAsync(int id)
         {
-            throw new NotImplementedException();
+            await _commentRepository.DeleteAsync(id);
         }
 
-        Task<IEnumerable<Comment>> ICommentService.GetAllCommentAsync()
+        async Task<IEnumerable<Comment>> ICommentService.GetAllCommentAsync()
         {
-            throw new NotImplementedException();
+            return await _commentRepository.GetAllAsync();
         }
 
-        Task<Comment> ICommentService.GetCommentAsync(int id)
+        async Task<Comment> ICommentService.GetCommentAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _commentRepository.GetByIdAsync(id);
         }
 
         Task ICommentService.UpdateCommentAsync(CreateCommentDto createCommentDto)

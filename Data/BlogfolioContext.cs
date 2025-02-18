@@ -40,11 +40,16 @@ namespace blogfolio.Data
                 .HasOne(bt => bt.Tag)
                 .WithMany(t => t.BlogTags)
                 .HasForeignKey(bt => bt.TagId)
-                .OnDelete(DeleteBehavior.Cascade); ;
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId);
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Blog)
+                .WithMany(b => b.Comments)
+                .HasForeignKey(c => c.BlogId);
 
             modelBuilder.Entity<Tag>().HasData(
                 new Tag { Id = 1, Name = "Technology" },

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using blogfolio.Dto;
+using blogfolio.Dto.Blog;
 using blogfolio.Entities;
 using blogfolio.Services;
 using Microsoft.AspNetCore.Mvc;

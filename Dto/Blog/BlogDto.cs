@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using blogfolio.Dto.Comment;
+using blogfolio.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace blogfolio.Dto
+namespace blogfolio.Dto.Blog
 {
-    public record class BlogResponseDto
+    public record class BlogDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "This field is required"), StringLength(100, ErrorMessage = "Title can't be longer than 100 characters.")]
         public string Title { get; set; }
         [Required(ErrorMessage = "This field is required")]
@@ -13,5 +16,10 @@ namespace blogfolio.Dto
         public string ImagePath { get; set; }
         public DateTime CreatedDate { get; set; }
         public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<ReadCommentDto> Comments { get; set; }
+
     }
+
+
+
 }

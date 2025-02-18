@@ -1,5 +1,5 @@
 ﻿using blogfolio.Data;
-using blogfolio.Dto;
+using blogfolio.Dto.Blog;
 using blogfolio.Entities;
 using blogfolio.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;

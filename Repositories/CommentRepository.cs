@@ -31,7 +31,7 @@ namespace blogfolio.Repositories
 
         async Task<IEnumerable<Comment>> ICommentRepository.GetAllAsync()
         {
-            var comments = await _blogfolioContext.comments.ToListAsync();
+            var comments = await _blogfolioContext.comments.Include(c => c.User).ToListAsync();
             return comments;
         }
 

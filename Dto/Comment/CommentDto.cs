@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace blogfolio.Dto
+namespace blogfolio.Dto.Comment
 {
-    public class CreateCommentDto
+    public record class CommentDto
     {
+        public int Id { get; set; } 
         [Required(ErrorMessage = "This field is required"), StringLength(100)]
         public string Text { get; set; }
         [Required]

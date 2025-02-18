@@ -16,5 +16,6 @@ namespace blogfolio.Entities
         public User User { get; set; }
         public DateTime CreatedDate { get; set; }
         public ICollection<BlogTag> BlogTags { get; set; }
+        public ICollection <Comment> Comments { get; set; }
     }
 }

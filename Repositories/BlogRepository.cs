@@ -29,7 +29,11 @@ namespace blogfolio.Repositories
 
         async Task<IEnumerable<Blog>> IBlogRepository.GetAllAsync()
         {
-            var blogs =  await _blogfolioContext.Blogs.Include(b => b.BlogTags)
+            var blogs =  await _blogfolioContext.Blogs
+        .Include(b => b.User)
+        .Include(b => b.Comments)
+            .ThenInclude(c => c.User)
+        .Include(b => b.BlogTags)
             .ThenInclude(bt => bt.Tag)
         .ToListAsync();
 
@@ -38,9 +42,12 @@ namespace blogfolio.Repositories
 
         async Task<Blog> IBlogRepository.GetAsync(int id)
         {
-            var blog = await _blogfolioContext.Blogs.Include(b => b.BlogTags)
-            .ThenInclude(bt => bt.Tag)
-        .FirstOrDefaultAsync(b => b.Id == id);
+            var blog = await _blogfolioContext.Blogs
+         .Include(b => b.User)
+         .Include(b => b.Comments)
+             .ThenInclude(c => c.User)
+         .Include(b => b.BlogTags)
+             .ThenInclude(bt => bt.Tag).FirstOrDefaultAsync(b => b.Id == id);
             return blog;
         }
 

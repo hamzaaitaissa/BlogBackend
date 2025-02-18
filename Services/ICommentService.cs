@@ -1,4 +1,4 @@
-﻿using blogfolio.Dto;
+﻿using blogfolio.Dto.Comment;
 using blogfolio.Entities;
 
 namespace blogfolio.Services

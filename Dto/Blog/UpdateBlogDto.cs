@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace blogfolio.Dto
+namespace blogfolio.Dto.Blog
 {
-    public class CreateBlogDto
+    public class UpdateBlogDto
     {
         [Required(ErrorMessage = "Title is required.")]
         public string Title { get; set; }
