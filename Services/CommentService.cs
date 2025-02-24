@@ -39,7 +39,7 @@ namespace blogfolio.Services
             return await _commentRepository.GetByIdAsync(id);
         }
 
-        Task ICommentService.UpdateCommentAsync(CreateCommentDto createCommentDto)
+        Task ICommentService.UpdateCommentAsync(int id,UpdateCommentDto createCommentDto)
         {
             throw new NotImplementedException();
         }

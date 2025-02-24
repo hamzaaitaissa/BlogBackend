@@ -8,7 +8,7 @@ namespace blogfolio.Services
         Task<IEnumerable<Comment>> GetAllCommentAsync();
         Task<Comment> GetCommentAsync(int id);
         Task<Comment> CreateCommentAsync(CreateCommentDto createCommentDto);
-        Task UpdateCommentAsync(CreateCommentDto createCommentDto);
+        Task UpdateCommentAsync(int id,UpdateCommentDto createCommentDto);
         Task DeleteCommentAsync(int id);
 
 

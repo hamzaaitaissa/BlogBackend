@@ -25,7 +25,7 @@ namespace blogfolio.Controllers
         public async Task<ActionResult<Task>> GetComment(int id)
         {
             var comment = await _commentService.GetCommentAsync(id);
-            if(comment == null)
+            if (comment == null)
             {
                 return NotFound();
             }
@@ -39,6 +39,11 @@ namespace blogfolio.Controllers
         public async Task<ActionResult> DeleteComment(int id)
         {
             await _commentService.DeleteCommentAsync(id);
+            return Ok();
+        }
+        public async Task<ActionResult<Comment>> UpdateComment(int id, [FromBody] UpdateCommentDto updateCommentDto)
+        {
+            await _commentService.UpdateCommentAsync(id, updateCommentDto);
             return Ok();
         }
     }
