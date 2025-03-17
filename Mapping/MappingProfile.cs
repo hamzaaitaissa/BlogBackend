@@ -17,6 +17,7 @@ namespace blogfolio.Mapping
 
             CreateMap<Comment, ReadCommentDto>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UpdateUserDto>();
         }
     }
 }

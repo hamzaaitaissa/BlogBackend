@@ -1,4 +1,5 @@
-﻿using blogfolio.Dto.User;
+﻿using AutoMapper;
+using blogfolio.Dto.User;
 using blogfolio.Entities;
 using blogfolio.Repositories;
 
@@ -7,15 +8,18 @@ namespace blogfolio.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public Task<User> CreateUserAsync(CreateUserDto createUserDto)
+        public async Task<User> CreateUserAsync(CreateUserDto createUserDto)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<User>(createUserDto);
+            return await _userRepository.AddAsync(user);
         }
 
         public Task DeleteUserAsync(int id)
@@ -23,14 +27,16 @@ namespace blogfolio.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdAsync(id);
+            return user;
         }
 
-        public Task UpdateUserAsync(UpdateUserDto updateUserDto)
+        public async Task UpdateUserAsync(UpdateUserDto updateUserDto)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<User>(updateUserDto);
+            await _userRepository.UpdateAsync(user);
         }
     }
 }
