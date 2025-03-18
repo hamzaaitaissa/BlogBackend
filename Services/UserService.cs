@@ -18,13 +18,14 @@ namespace blogfolio.Services
 
         public async Task<User> CreateUserAsync(CreateUserDto createUserDto)
         {
+            //TODO: chack if user already exists
             var user = _mapper.Map<User>(createUserDto);
             return await _userRepository.AddAsync(user);
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+             await _userRepository.DeleteAsync(id);
         }
 
         public async Task<User> GetUserByIdAsync(int id)

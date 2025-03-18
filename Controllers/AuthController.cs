@@ -1,9 +1,13 @@
 ﻿using blogfolio.Data;
 using blogfolio.Dto;
+using blogfolio.Dto.User;
+using blogfolio.Entities;
+using blogfolio.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -16,11 +20,13 @@ namespace blogfolio.Controllers
         //IConfiguration is an interface in ASP.NET Core that provides access to configuration settings.
         private readonly IConfiguration _config;
         private readonly BlogfolioContext _blogfolioContext;
+        private readonly IUserService _userService;
 
-        public AuthController(IConfiguration config, BlogfolioContext blogfolioContext)
+        public AuthController(IConfiguration config, BlogfolioContext blogfolioContext, IUserService userService)
         {
             _config = config;
             _blogfolioContext = blogfolioContext;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -66,6 +72,25 @@ namespace blogfolio.Controllers
             );
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+        }
+
+        public async Task<ActionResult<User>> RegisterUser([FromBody] CreateUserDto createUserDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new InvalidOperationException();
+            }
+            try
+            {
+                var res = await _userService.CreateUserAsync(createUserDto);
+                return Ok(res);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex);
+            }
+
+
         }
 
     }
