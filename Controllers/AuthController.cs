@@ -74,8 +74,9 @@ namespace blogfolio.Controllers
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
         }
 
+        [HttpPost("signup")]
         public async Task<ActionResult<User>> RegisterUser([FromBody] CreateUserDto createUserDto)
-        {
+        {EventArgs: 
             if (!ModelState.IsValid)
             {
                 throw new InvalidOperationException();

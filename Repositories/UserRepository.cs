@@ -12,6 +12,12 @@ namespace blogfolio.Repositories
             _blogfolioContext = blogfolioContext;
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var user = await _blogfolioContext.Users.FindAsync(email);
+            return user;
+        }
+
         public async Task<User> AddAsync(User user)
         {
             await _blogfolioContext.Users.AddAsync(user);
