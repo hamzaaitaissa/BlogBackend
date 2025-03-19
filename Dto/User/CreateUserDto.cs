@@ -1,8 +1,10 @@
-﻿namespace blogfolio.Dto.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace blogfolio.Dto.User
 {
-    public class CreateUserDto
+    public record class CreateUserDto
     {
-        public string Fullname { get; set; }
+        public string FullName { get; set; }
         public string Email { get; set; }
         public string HashedPassword { get; set; }
     }

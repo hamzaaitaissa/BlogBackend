@@ -1,8 +1,10 @@
 using blogfolio.Data;
+using blogfolio.Entities;
 using blogfolio.Mapping;
 using blogfolio.Repositories;
 using blogfolio.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -36,6 +38,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<BlogfolioContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

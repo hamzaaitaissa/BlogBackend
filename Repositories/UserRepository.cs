@@ -1,5 +1,6 @@
 ﻿using blogfolio.Data;
 using blogfolio.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace blogfolio.Repositories
 {
@@ -14,7 +15,7 @@ namespace blogfolio.Repositories
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            var user = await _blogfolioContext.Users.FindAsync(email);
+            var user = await _blogfolioContext.Users.FirstOrDefaultAsync(u => u.Email == email);
             return user;
         }
 
