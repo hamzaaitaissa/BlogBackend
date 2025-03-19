@@ -76,7 +76,7 @@ namespace blogfolio.Controllers
 
         [HttpPost("signup")]
         public async Task<ActionResult<User>> RegisterUser([FromBody] CreateUserDto createUserDto)
-        {EventArgs: 
+        {
             if (!ModelState.IsValid)
             {
                 throw new InvalidOperationException();
