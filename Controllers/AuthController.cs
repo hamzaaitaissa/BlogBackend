@@ -83,6 +83,7 @@ namespace blogfolio.Controllers
             }
             try
             {
+                Console.WriteLine(createUserDto);
                 var res = await _userService.CreateUserAsync(createUserDto);
                 return Ok(res);
             }

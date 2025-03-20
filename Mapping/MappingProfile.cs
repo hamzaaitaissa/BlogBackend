@@ -3,10 +3,12 @@ using blogfolio.Dto.Blog;
 using blogfolio.Dto.Comment;
 using blogfolio.Dto.User;
 using blogfolio.Entities;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 
 namespace blogfolio.Mapping
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
@@ -17,8 +19,34 @@ namespace blogfolio.Mapping
 
             CreateMap<Comment, ReadCommentDto>();
             CreateMap<User, UserDto>();
-            CreateMap<User, UpdateUserDto>();
-            CreateMap<User, CreateUserDto>();
+            CreateMap<UpdateUserDto, User>().ForMember(dest => dest.HashedPassword, opt => opt.MapFrom(src => HashPassword(src.Password)));
+            CreateMap<CreateUserDto, User>().ForMember(dest => dest.HashedPassword, opt => opt.MapFrom(src => HashPassword(src.Password)));
+
+        }
+        /*
+         Password from CreateUserDto is mapped to HashedPassword in User.
+           The HashPassword function hashes the password before saving it to the database
+         
+         */
+        private static string HashPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password)) return null;
+
+            byte[] salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 32
+            ));
+
+            return hashed;
         }
     }
 }

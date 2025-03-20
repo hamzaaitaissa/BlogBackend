@@ -28,7 +28,7 @@ namespace blogfolio.Services
                 throw new InvalidOperationException("A user with the same Email is already registred");
             }
             var user = _mapper.Map<User>(createUserDto);
-            user.HashedPassword = _passwordHasher.HashPassword(user, createUserDto.HashedPassword);
+            user.HashedPassword = _passwordHasher.HashPassword(user, createUserDto.Password);
             return await _userRepository.AddAsync(user);
         }
 
