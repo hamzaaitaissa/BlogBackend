@@ -46,6 +46,7 @@ namespace blogfolio.Services
         public async Task UpdateUserAsync(UpdateUserDto updateUserDto)
         {
             var user = _mapper.Map<User>(updateUserDto);
+            user.HashedPassword = _passwordHasher.HashPassword(user, updateUserDto.Password);
             await _userRepository.UpdateAsync(user);
         }
     }
