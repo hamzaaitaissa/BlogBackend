@@ -19,6 +19,12 @@ namespace blogfolio.Repositories
             return user;
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            var users = await _blogfolioContext.Users.ToListAsync();
+            return users;
+        }
+
         public async Task<User> AddAsync(User user)
         {
             await _blogfolioContext.Users.AddAsync(user);

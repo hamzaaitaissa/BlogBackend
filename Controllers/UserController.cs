@@ -36,5 +36,12 @@ namespace blogfolio.Controllers
             await _userService.UpdateUserAsync(updateUserDto);
             return Ok("User has been updated.");
         }
+
+        [HttpGet] 
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsersAsync()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);   
+        }
     }
 }

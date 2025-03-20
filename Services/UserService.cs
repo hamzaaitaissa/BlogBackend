@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using blogfolio.Dto.Blog;
 using blogfolio.Dto.User;
 using blogfolio.Entities;
 using blogfolio.Repositories;
@@ -17,6 +18,13 @@ namespace blogfolio.Services
             _userRepository = userRepository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
+            return users;
         }
 
         public async Task<User> CreateUserAsync(CreateUserDto createUserDto)
