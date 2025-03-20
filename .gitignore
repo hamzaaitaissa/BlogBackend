@@ -33,4 +33,6 @@ secrets.json
 
 # Ignore temporary files
 temp/
+
+blog.http
 	
