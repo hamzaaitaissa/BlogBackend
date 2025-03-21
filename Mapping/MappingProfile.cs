@@ -19,6 +19,7 @@ namespace blogfolio.Mapping
 
             CreateMap<Comment, ReadCommentDto>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserWithBlogsDto>();
             CreateMap<UpdateUserDto, User>().ForMember(dest => dest.HashedPassword, opt => opt.MapFrom(src => HashPassword(src.Password)));
             CreateMap<CreateUserDto, User>().ForMember(dest => dest.HashedPassword, opt => opt.MapFrom(src => HashPassword(src.Password)));
 

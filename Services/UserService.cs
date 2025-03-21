@@ -20,11 +20,19 @@ namespace blogfolio.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserWithBlogsDto>> GetAllUsersAsync()
         {
+            //users include all blogs
             var users = await _userRepository.GetAllAsync();
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
-            return users;
+            //users now after this select include only the Ids from blogs
+            var usersDto = users.Select(u => new UserWithBlogsDto
+            {
+                Id = u.Id,
+                FullName = u.FullName,
+                Email = u.Email,
+                BlogIds = u.Blogs.Select(b => b.Id).ToList() 
+            });
+            return usersDto;
         }
 
         public async Task<User> CreateUserAsync(CreateUserDto createUserDto)

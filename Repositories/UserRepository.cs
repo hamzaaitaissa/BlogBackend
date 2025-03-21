@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace blogfolio.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly BlogfolioContext _blogfolioContext;
 
@@ -21,8 +21,10 @@ namespace blogfolio.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _blogfolioContext.Users.ToListAsync();
-            return users;
+            //User object has a Blogs collection when fetched
+            return await _blogfolioContext.Users
+        .Include(u => u.Blogs)
+        .ToListAsync();
         }
 
         public async Task<User> AddAsync(User user)

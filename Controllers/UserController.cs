@@ -38,7 +38,7 @@ namespace blogfolio.Controllers
         }
 
         [HttpGet] 
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsersAsync()
+        public async Task<ActionResult<IEnumerable<UserWithBlogsDto>>> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);   
