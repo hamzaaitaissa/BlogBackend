@@ -25,13 +25,14 @@ namespace blogfolio.Services
             //users include all blogs
             var users = await _userRepository.GetAllAsync();
             //users now after this select include only the Ids from blogs
-            var usersDto = users.Select(u => new UserWithBlogsDto
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                Email = u.Email,
-                BlogIds = u.Blogs.Select(b => b.Id).ToList() 
-            });
+            //var usersDto = users.Select(u => new UserWithBlogsDto
+            //{
+            //    Id = u.Id,
+            //    FullName = u.FullName,
+            //    Email = u.Email,
+            //    BlogIds = u.Blogs.Select(b => b.Id).ToList() 
+            //});
+            var usersDto = _mapper.Map<IEnumerable<UserWithBlogsDto>>(users);
             return usersDto;
         }
 
