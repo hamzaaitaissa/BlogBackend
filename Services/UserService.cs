@@ -2,6 +2,7 @@
 using blogfolio.Dto.Blog;
 using blogfolio.Dto.User;
 using blogfolio.Entities;
+using blogfolio.ENUMS;
 using blogfolio.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -65,6 +66,17 @@ namespace blogfolio.Services
             var user = _mapper.Map<User>(updateUserDto);
             user.HashedPassword = _passwordHasher.HashPassword(user, updateUserDto.Password);
             await _userRepository.UpdateAsync(user);
+        }
+        public async Task<bool> UpdateUserRoleAsync(int userId, UserRole newRole)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if(user == null)
+            {
+                throw new Exception("user not found!");
+            }
+            user.Role = newRole;
+            await _userRepository.UpdateAsync(user);
+            return true;
         }
     }
 }

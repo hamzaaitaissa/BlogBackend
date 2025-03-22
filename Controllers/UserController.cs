@@ -1,6 +1,8 @@
 ﻿using blogfolio.Dto.User;
 using blogfolio.Entities;
+using blogfolio.ENUMS;
 using blogfolio.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +44,15 @@ namespace blogfolio.Controllers
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);   
+        }
+
+        //only admins can change a user's role
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-role/{userId}")]
+        public async Task<IActionResult> UpdateUserRole(int userId, [FromBody] UserRole newRole)
+        {
+            await _userService.UpdateUserRoleAsync(userId, newRole);
+            return Ok("User role updated successfully.");
         }
     }
 }

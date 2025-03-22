@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using blogfolio.ENUMS;
+using System.ComponentModel.DataAnnotations;
 
 namespace blogfolio.Entities
 {
@@ -16,6 +17,8 @@ namespace blogfolio.Entities
         public ICollection<Blog> Blogs { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+        [Required]
+        public UserRole Role { get; set; } = UserRole.Reader;
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using blogfolio.Dto.User;
 using blogfolio.Entities;
+using blogfolio.ENUMS;
 
 namespace blogfolio.Services
 {
@@ -10,5 +11,6 @@ namespace blogfolio.Services
         Task UpdateUserAsync(UpdateUserDto updateUserDto);
         Task DeleteUserAsync(int id);
         Task<User> GetUserByIdAsync(int id);
+        Task<bool> UpdateUserRoleAsync(int userId, UserRole newRole);
     }
 }
