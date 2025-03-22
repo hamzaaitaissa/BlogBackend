@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,17 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings.GetValue<string>("Audience"),
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            context.HandleResponse(); // THIS IS HOW YOU Prevent default 401 response
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            var response = new { message = "You are not authorized to access this resource." };
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+    };
 });
 
 builder.Services.AddDbContext<BlogfolioContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -50,11 +62,19 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 }); ;
 // Register AutoMapper and scan for profiles in the current assembly
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+//to add Authorization Services
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+// to Enable Authentication & Authorization Middleware 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
