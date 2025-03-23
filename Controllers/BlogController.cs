@@ -2,6 +2,7 @@
 using blogfolio.Dto.Blog;
 using blogfolio.Entities;
 using blogfolio.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace blogfolio.Controllers
@@ -18,6 +19,7 @@ namespace blogfolio.Controllers
             _blogService = blogService;
             _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Blog>>> GetBlogs()
         {
@@ -38,7 +40,7 @@ namespace blogfolio.Controllers
             var responseDto = _mapper.Map<BlogResponseDto>(blog);
             return Ok(responseDto);
         }
-
+        [Authorize(Roles = "Admin,Editor")]
         [HttpPost]
         public async Task<ActionResult<Blog>> CreateBlog([FromBody] CreateBlogDto createBlogDto)
         {
@@ -50,6 +52,7 @@ namespace blogfolio.Controllers
             // Returns a 201 Created response with a route to the newly created blog post
             return CreatedAtAction(nameof(GetBlog), new { id = blog.Id }, blog);
         }
+        [Authorize(Roles = "Admin,Editor")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Blog>> UpdateBlog(int id,[FromBody] UpdateBlogDto updateBlogDto)
         {
@@ -60,7 +63,7 @@ namespace blogfolio.Controllers
             await _blogService.UpdateBlogAsync(updateBlogDto, id);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Blog>> DeleteBlog(int id)
         {
