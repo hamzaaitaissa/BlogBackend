@@ -1,9 +1,11 @@
 using blogfolio.Data;
 using blogfolio.Entities;
 using blogfolio.Mapping;
+using blogfolio.Policies;
 using blogfolio.Repositories;
 using blogfolio.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +18,12 @@ var builder = WebApplication.CreateBuilder(args);
 //JWT Auth
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings.GetValue<string>("SecretKey");
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BlogOwnerPolicy", policy =>
+        policy.Requirements.Add(new BlogOwnerRequirement()));
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -53,6 +61,7 @@ builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IAuthorizationHandler, BlogOwnerHandler>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

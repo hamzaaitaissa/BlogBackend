@@ -13,11 +13,13 @@ namespace blogfolio.Controllers
     {
         private readonly IBlogService _blogService;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
-        public BlogController(IBlogService blogService, IMapper mapper)
+        public BlogController(IBlogService blogService, IMapper mapper, IAuthorizationService authorizationService)
         {
             _blogService = blogService;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -60,6 +62,12 @@ namespace blogfolio.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var blog = await _blogService.GetBlogById(id);
+
+            var authTest = _authorizationService.AuthorizeAsync(User, blog, "BlogOwnerPolicy");
+            if (authTest == null) return Forbid();
+
             await _blogService.UpdateBlogAsync(updateBlogDto, id);
             return Ok();
         }
@@ -67,6 +75,10 @@ namespace blogfolio.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Blog>> DeleteBlog(int id)
         {
+            if (!ModelState.IsValid) {  return BadRequest(ModelState); }
+            var blog = _blogService.GetBlogById(id);
+            var authTest = _authorizationService.AuthorizeAsync(User, blog, "BlogOwnerPolicy");
+            if (authTest == null) return Forbid();  
             await _blogService.DeleteBlogAsync(id);
             return Ok();
         }
