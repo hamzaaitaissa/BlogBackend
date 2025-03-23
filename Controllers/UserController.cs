@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace blogfolio.Controllers
 {
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -19,11 +21,14 @@ namespace blogfolio.Controllers
             _userService = userService;
         }
 
+
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserByIdAsync(int id)
         {
             return await _userService.GetUserByIdAsync(id);
         }
+
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUserByIdAsync(int id)
@@ -31,6 +36,8 @@ namespace blogfolio.Controllers
             await _userService.DeleteUserAsync(id);
             return Ok("User has been deleted");
         }
+
+
         [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<ActionResult<User>> UpdateUserAsync(UpdateUserDto updateUserDto)
@@ -39,12 +46,14 @@ namespace blogfolio.Controllers
             return Ok("User has been updated.");
         }
 
+
         [HttpGet] 
         public async Task<ActionResult<IEnumerable<UserWithBlogsDto>>> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);   
         }
+
 
         //only admins can change a user's role
         [Authorize(Roles = "Admin")]
