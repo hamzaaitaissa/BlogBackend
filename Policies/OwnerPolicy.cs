@@ -1,4 +1,5 @@
 ﻿using blogfolio.Entities;
+using blogfolio.ENUMS;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
@@ -11,12 +12,29 @@ namespace blogfolio.Policies
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, BlogOwnerRequirement requirement, Blog blog)
         {
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (blog.UserId.ToString() == userId) // If user owns the blog, allow access
+            if (blog.UserId.ToString() == userId || userRole == "Admin") // If user owns the blog or an Admin, allow access
             {
                 context.Succeed(requirement);
             }
 
+            return Task.CompletedTask;
+        }
+    }
+
+    public class CommentOwnerRequirement : IAuthorizationRequirement { }
+
+    public class CommentOwnerHandler : AuthorizationHandler<CommentOwnerRequirement, Comment>
+    {
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CommentOwnerRequirement requirement, Comment comment)
+        {
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+            if(comment.UserId.ToString() == userId && userRole == "Editor" || userRole == "Admin")
+            {
+                context.Succeed(requirement);
+            }
             return Task.CompletedTask;
         }
     }
