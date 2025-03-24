@@ -23,6 +23,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("BlogOwnerPolicy", policy =>
         policy.Requirements.Add(new BlogOwnerRequirement()));
+    options.AddPolicy("CommentOwnerPolicy", policy =>
+       policy.Requirements.Add(new CommentOwnerRequirement()));
+    options.AddPolicy("UserOwnerPolicy", policy =>
+       policy.Requirements.Add(new UserOwnerRequirement()));
 });
 
 builder.Services.AddAuthentication(options =>
@@ -62,6 +66,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IAuthorizationHandler, BlogOwnerHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, CommentOwnerHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, UserOwnerHandler>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
