@@ -38,6 +38,21 @@ namespace blogfolio.Policies
             return Task.CompletedTask;
         }
     }
+
+    public class UserOwnerRequirement : IAuthorizationRequirement { }
+    public class UserOwnerHandler : AuthorizationHandler<UserOwnerRequirement, User>
+    {
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserOwnerRequirement requirement, User user)
+        {
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userRole = context.User.FindFirst(ClaimTypes.Role)?.Value;
+            if(user.Id.ToString() ==  userId || userRole == "Admin")
+            {
+                context.Succeed(requirement);
+            }
+            return Task.CompletedTask;
+        }
+    }
 }
 
 /*
