@@ -28,28 +28,20 @@ Authorization Policies (for role-based access)
 📌 Installation & Setup
 Clone the repository
 
-sh
-Copy
-Edit
+
 git clone https://github.com/yourusername/blogfolio-api.git  
 cd blogfolio-api
 Install dependencies
 
-sh
-Copy
-Edit
+
 dotnet restore
 Update database & apply migrations
 
-sh
-Copy
-Edit
+
 dotnet ef database update
 Run the API
 
-sh
-Copy
-Edit
+
 dotnet run
 🔐 Authentication & Roles
 The API uses JWT Authentication. Users can have different roles:
